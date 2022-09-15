@@ -3,10 +3,10 @@ import axios from "axios";
 
 export const getCoins = createAsyncThunk("stats/getCoins", () => {
   return axios
-    .get("https://coinranking1.p.rapidapi.com/coins?limit=10", {
+    .get(`${import.meta.env.VITE_CRYPTO_API_URL}/coins?limit=10`, {
       headers: {
-        "X-RapidAPI-Key": "0f4f6068b9msh9bddbc864d82bc0p131a30jsn94a768c23ff1",
-        "X-RapidAPI-Host": "coinranking1.p.rapidapi.com",
+        "X-RapidAPI-Key": import.meta.env.VITE_RAPIDAPI_KEY,
+        "X-RapidAPI-Host": import.meta.env.VITE_CRYPTO_RAPIDAPI_HOST,
       },
     })
     .then((res) => res.data);
