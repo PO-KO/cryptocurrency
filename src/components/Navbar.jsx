@@ -7,6 +7,25 @@ import {
   RiNewspaperFill,
 } from "react-icons/ri";
 
+const LINKS = [
+  {
+    name: "Home",
+    icon: <RiHomeFill className="md:text-xl text-2xl" />,
+  },
+  {
+    name: "Cryptocurrencies",
+    icon: <RiMoneyDollarCircleFill className="md:text-xl text-2xl" />,
+  },
+  {
+    name: "Exchanges",
+    icon: <RiExchangeFill className="md:text-xl text-2xl" />,
+  },
+  {
+    name: "News",
+    icon: <RiNewspaperFill className="md:text-xl text-2xl" />,
+  },
+];
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (
@@ -36,117 +55,42 @@ const Navbar = () => {
             isOpen ? "!items-stretch" : "!items-center"
           }`}
         >
-          <NavLink
-            to="/"
-            style={({ isActive }) => (isActive ? { color: "#5B867C" } : null)}
-            className={` px-4 py-3 flex items-center md:gap-4 hover:text-primary-dark text-primary-light transition-all ${
-              isOpen ? "gap-2" : null
-            }`}
-            end
-          >
-            {({ isActive }) => (
-              <>
-                <span className="md:w-10 md:h-10 w-12 h-12 rounded-md border border-gray-100 flex items-center justify-center">
-                  <RiHomeFill className="md:text-xl text-2xl" />
-                </span>
-                <span
-                  className={`md:text-[16px] text-sm font-semibold hidden md:block ${
-                    isOpen ? "!block" : "!hidden"
-                  }`}
-                >
-                  Home
-                </span>
-                <div
-                  className={`w-[6px] h-[6px] ml-auto rounded-full bg-primary-dark ${
-                    isActive && isOpen ? "hidden md:block" : "hidden"
-                  }`}
-                />
-              </>
-            )}
-          </NavLink>
-          <NavLink
-            to="cryptocurrencies"
-            style={({ isActive }) => (isActive ? { color: "#5B867C" } : null)}
-            className={` px-4 py-3 flex items-center md:gap-4 hover:text-primary-dark text-primary-light transition-all ${
-              isOpen ? "gap-2" : null
-            }`}
-          >
-            {({ isActive }) => (
-              <>
-                <span
-                  className={`md:w-10 md:h-10 w-12 h-12 rounded-md border border-gray-100 flex items-center justify-center`}
-                >
-                  <RiMoneyDollarCircleFill className="md:text-2xl text-3xl" />
-                </span>
-                <span
-                  className={`md:text-[16px] text-sm font-semibold hidden md:block ${
-                    isOpen ? "!block" : "!hidden"
-                  }`}
-                >
-                  Cryptocurrencies
-                </span>
-                <div
-                  className={`w-[6px] h-[6px] ml-auto rounded-full bg-primary-dark ${
-                    isActive && isOpen ? "hidden md:block" : "hidden"
-                  }`}
-                />
-              </>
-            )}
-          </NavLink>
-          <NavLink
-            to="exchanges"
-            style={({ isActive }) => (isActive ? { color: "#5B867C" } : null)}
-            className={` px-4 py-3 flex items-center md:gap-4 hover:text-primary-dark text-primary-light transition-all ${
-              isOpen ? "gap-2" : null
-            }`}
-          >
-            {({ isActive }) => (
-              <>
-                <span className="md:w-10 md:h-10 w-12 h-12 rounded-md border border-gray-100 flex items-center justify-center">
-                  <RiExchangeFill className="md:text-2xl text-3xl" />
-                </span>
-                <span
-                  className={`md:text-[16px] text-sm font-semibold hidden md:block ${
-                    isOpen ? "!block" : "!hidden"
-                  }`}
-                >
-                  Exchanges
-                </span>
-                <div
-                  className={`w-[6px] h-[6px] ml-auto rounded-full bg-primary-dark ${
-                    isActive && isOpen ? "hidden md:block" : "hidden"
-                  }`}
-                />
-              </>
-            )}
-          </NavLink>
-          <NavLink
-            to="news"
-            style={({ isActive }) => (isActive ? { color: "#5B867C" } : null)}
-            className={` px-4 py-3 flex items-center md:gap-4 hover:text-primary-dark text-primary-light transition-all ${
-              isOpen ? "gap-2" : null
-            }`}
-          >
-            {({ isActive }) => (
-              <>
-                <span className="md:w-10 md:h-10 w-12 h-12 rounded-md border border-gray-100 flex items-center justify-center">
-                  <RiNewspaperFill className="md:text-2xl text-3xl" />
-                </span>
-                <span
-                  className={`md:text-[16px] text-sm font-semibold hidden md:block ${
-                    isOpen ? "!block" : "!hidden"
-                  }`}
-                >
-                  News
-                </span>
-                <div
-                  className={`w-[6px] h-[6px] ml-auto rounded-full bg-primary-dark ${
-                    isActive && isOpen ? "hidden md:block" : "hidden"
-                  }`}
-                />
-              </>
-            )}
-          </NavLink>
+          {LINKS.map(({ name, icon }, id) => (
+            <NavLink
+              key={id}
+              to={name === "Home" ? "/" : name.toLowerCase()}
+              style={({ isActive }) => (isActive ? { color: "#5B867C" } : null)}
+              className={`group px-4 py-3 flex items-center md:gap-4 hover:text-primary-dark relative text-primary-light transition-all ${
+                isOpen ? "gap-2" : "items-center"
+              }`}
+              end
+            >
+              {({ isActive }) => (
+                <>
+                  <span className="md:w-10 md:h-10 w-12 h-12 rounded-md border border-gray-100 flex items-center justify-center">
+                    {icon}
+                  </span>
+                  <span
+                    className={`md:text-[16px] text-sm font-semibold hidden md:block ${
+                      isOpen ? "!block" : "!hidden"
+                    }`}
+                  >
+                    {name}
+                  </span>
+                  <div
+                    className={`w-[6px] h-[6px] ml-auto rounded-full bg-primary-dark ${
+                      isActive && isOpen ? "hidden md:block" : "hidden"
+                    }`}
+                  />
+                  {!isOpen && (
+                    <span className="absolute text-[8px] bg-primary-mostlydark text-secondary-light py-[2px] px-1 rounded font-semibold before:absolute before:border-4 before:border-transparent before:border-r-primary-mostlydark before:-left-2 before:top-1/2 before:-translate-y-1/2 left-full opacity-0 group-hover:opacity-100 transition-opacity">
+                      {name}
+                    </span>
+                  )}
+                </>
+              )}
+            </NavLink>
+          ))}
         </div>
       </div>
     </nav>
