@@ -8,7 +8,7 @@ import News from "./components/News";
 function App() {
   return (
     <Router>
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen dark">
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
