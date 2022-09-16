@@ -31,10 +31,10 @@ const Navbar = () => {
   return (
     <nav
       className={`bg-secondary-light ${
-        isOpen ? "!w-full sm:!w-80 fixed md:sticky" : "!w-24 sticky"
-      } w-24 md:w-80 flex flex-col shadow-main h-screen md:sticky top-0 left-0 rounded-r-lg transition-all`}
+        isOpen ? "!w-full sm:!w-80 fixed md:sticky" : "!w-20 sticky"
+      } w-20 md:w-80 flex flex-col shadow-main h-screen md:sticky top-0 left-0 rounded-r-lg transition-all`}
     >
-      <div className="top px-4 flex items-center space-x-1 justify-center border-b border-gray-100 md:py-4 py-2 transition-all">
+      <div className="top px-0 sm:px-4 flex items-center space-x-1 justify-center border-b border-gray-100 md:py-4 py-2 transition-all">
         <span
           className="logoShape md:text-2xl text-xl font-bold tracking-tight cursor-pointer md:w-12 md:h-12 h-10 w-10 bg-secondary-dark text-secondary-light flex items-center justify-center rounded-full italic"
           onClick={() => setIsOpen(!isOpen)}
@@ -60,7 +60,7 @@ const Navbar = () => {
               key={id}
               to={name === "Home" ? "/" : name.toLowerCase()}
               style={({ isActive }) => (isActive ? { color: "#5B867C" } : null)}
-              className={`group px-4 py-3 flex items-center md:gap-4 hover:text-primary-dark relative text-primary-light transition-all ${
+              className={`group px-2 sm:px-4 py-3 flex items-center md:gap-4 hover:text-primary-dark relative text-primary-light transition-all ${
                 isOpen ? "gap-2" : "items-center"
               }`}
               end

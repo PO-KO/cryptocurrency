@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import statsReducer from "./statsSlice";
+import generalDataReducer from "./homeSlice";
 
 const store = configureStore({
   reducer: {
-    stats: statsReducer,
+    generalData: generalDataReducer,
   },
 });
 
