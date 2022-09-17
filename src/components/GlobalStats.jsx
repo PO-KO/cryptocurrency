@@ -13,10 +13,7 @@ const GlobalStats = ({ stats }) => {
             Total Cryptocurrencies
           </h3>
           <span className="text-2xl sm:text-3xl transition-all">
-            {millify(stats?.total, {
-              units: ["", "K", "M", "B", "T"],
-              decimalSeparator: ",",
-            })}
+            {stats?.total}
           </span>
         </div>
         <div className="statsBox">
@@ -24,10 +21,7 @@ const GlobalStats = ({ stats }) => {
             Total Exchanges
           </h3>
           <span className="text-2xl sm:text-3xl transition-all">
-            {millify(stats?.totalExchanges, {
-              units: ["", "K", "M", "B", "T"],
-              decimalSeparator: ",",
-            })}
+            {millify(stats?.totalExchanges)}
           </span>
         </div>
         <div className="statsBox">
@@ -35,10 +29,7 @@ const GlobalStats = ({ stats }) => {
             Total Markets
           </h3>
           <span className="text-2xl sm:text-3xl transition-all">
-            {millify(stats?.totalMarkets, {
-              units: ["", "K", "M", "B", "T"],
-              decimalSeparator: ",",
-            })}
+            {millify(stats?.totalMarkets)}
           </span>
         </div>
         <div className="statsBox">
@@ -46,11 +37,7 @@ const GlobalStats = ({ stats }) => {
             Total Market Cap
           </h3>
           <span className="text-2xl sm:text-3xl transition-all">
-            $
-            {millify(stats?.totalMarketCap, {
-              units: ["", "K", "M", "B", "T"],
-              decimalSeparator: ",",
-            })}
+            ${millify(stats?.totalMarketCap)}
           </span>
         </div>
         <div className="statsBox">
@@ -58,11 +45,7 @@ const GlobalStats = ({ stats }) => {
             Total 24h Volume
           </h3>
           <span className="text-2xl sm:text-3xl transition-all">
-            $
-            {millify(stats?.total24hVolume, {
-              units: ["", "K", "M", "B", "T"],
-              decimalSeparator: ",",
-            })}
+            ${millify(stats?.total24hVolume)}
           </span>
         </div>
       </div>

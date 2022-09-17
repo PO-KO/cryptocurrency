@@ -30,7 +30,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <nav
-      className={`bg-secondary-light ${
+      className={`bg-secondary-light z-20 ${
         isOpen ? "!w-full sm:!w-80 fixed md:sticky" : "!w-20 sticky"
       } w-20 md:w-80 flex flex-col shadow-main h-screen md:sticky top-0 left-0 rounded-r-lg transition-all`}
     >

@@ -1,20 +1,18 @@
 import React from "react";
 import { TailSpin } from "react-loader-spinner";
 
-const Loading = () => {
+const Loading = ({ height }) => {
   return (
-    <div className="flex items-center justify-center h-screen">
-      <TailSpin
-        height="80"
-        width="80"
-        color="#52796F"
-        ariaLabel="tail-spin-loading"
-        radius="1"
-        wrapperStyle={{}}
-        wrapperClass=""
-        visible={true}
-      />
-    </div>
+    <TailSpin
+      height="60"
+      width="60"
+      color="#52796F"
+      ariaLabel="tail-spin-loading"
+      radius="1"
+      wrapperStyle={{ height: height }}
+      wrapperClass="justify-center items-center"
+      visible={true}
+    />
   );
 };
 

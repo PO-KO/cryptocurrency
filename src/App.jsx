@@ -1,25 +1,35 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Loading from "./components/Loading";
+import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
-const Home = React.lazy(() => import("./pages/Home"));
-const Cryptocurrencies = React.lazy(() => import("./pages/Cryptocurrencies"));
-const News = React.lazy(() => import("./pages/News"));
-const Exchanges = React.lazy(() => import("./pages/Exchanges"));
+import Cryptocurrencies from "./pages/Cryptocurrencies";
+import CryptoDetails from "./pages/CryptoDetails";
+import Home from "./pages/Home";
+import Exchanges from "./pages/Exchanges";
+import News from "./pages/News";
+import { getGeneralData } from "./store/cryptoApi";
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getGeneralData());
+  }, []);
   return (
     <Router>
       <div className="flex min-h-screen dark">
         <Navbar />
-        <Suspense>
+        <div className="main bg-secondary-mostlylight w-full min-h-screen">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/cryptocurrencies" element={<Cryptocurrencies />} />
+            <Route path="/crypto/:cryptoId" element={<CryptoDetails />} />
             <Route path="/exchanges" element={<Exchanges />} />
             <Route path="/news" element={<News />} />
           </Routes>
-        </Suspense>
+          <Footer />
+        </div>
       </div>
     </Router>
   );

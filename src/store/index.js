@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import generalDataReducer from "./homeSlice";
+import generalDataReducer from "./cryptoApi";
 
 const store = configureStore({
   reducer: {

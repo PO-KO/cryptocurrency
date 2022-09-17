@@ -2,10 +2,10 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const getGeneralData = createAsyncThunk(
-  "generalData/generalData",
-  () => {
+  "generalData/getGeneralData",
+  (details) => {
     return axios
-      .get(`${import.meta.env.VITE_CRYPTO_API_URL}/coins?limit=10`, {
+      .get(`${import.meta.env.VITE_CRYPTO_API_URL}/coins`, {
         headers: {
           "X-RapidAPI-Key": import.meta.env.VITE_RAPIDAPI_KEY,
           "X-RapidAPI-Host": import.meta.env.VITE_CRYPTO_RAPIDAPI_HOST,
@@ -15,7 +15,7 @@ export const getGeneralData = createAsyncThunk(
   }
 );
 
-const homeSlice = createSlice({
+const cryptoApi = createSlice({
   name: "generalData",
   initialState: { loading: false, data: [], error: "" },
   extraReducers: (builder) => {
@@ -35,4 +35,4 @@ const homeSlice = createSlice({
   },
 });
 
-export default homeSlice.reducer;
+export default cryptoApi.reducer;
