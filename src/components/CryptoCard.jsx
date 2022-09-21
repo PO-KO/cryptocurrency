@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const CryptoCard = ({ coin }) => {
   return (
     <Link
-      to={`crypto/${coin.uuid}`}
+      to={`/crypto/${coin.uuid}`}
       className="group bg-secondary-light shadow-sm rounded relative overflow-hidden hover:shadow-md transition-all"
     >
       <div className="absolute w-0 rounded-full h-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-50 group-hover:w-full group-hover:h-full group-hover:rounded-none transition-all" />

@@ -1,9 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import generalDataReducer from "./cryptoApi";
+import cryptoStatsReducer from "./cryptoStatsSlice";
+import cryptosReducer from "./cryptosSlice";
+import cryptoNewsReducer from "./cryptoNewsSlice";
 
 const store = configureStore({
   reducer: {
-    generalData: generalDataReducer,
+    cryptos: cryptosReducer,
+    cryptoStats: cryptoStatsReducer,
+    cryptoNews: cryptoNewsReducer,
   },
 });
 

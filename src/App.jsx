@@ -1,5 +1,3 @@
-import React, { Suspense, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
@@ -8,14 +6,8 @@ import CryptoDetails from "./pages/CryptoDetails";
 import Home from "./pages/Home";
 import Exchanges from "./pages/Exchanges";
 import News from "./pages/News";
-import { getGeneralData } from "./store/cryptoApi";
 
 function App() {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getGeneralData());
-  }, []);
   return (
     <Router>
       <div className="flex min-h-screen dark">

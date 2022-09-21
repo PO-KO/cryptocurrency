@@ -1,46 +1,47 @@
 import CryptoCard from "./CryptoCard";
 import { useDispatch, useSelector } from "react-redux";
-import { getGeneralData } from "../store/cryptoApi";
-import { useEffect, useState } from "react";
-import { useDebounce } from "use-debounce";
+import { useEffect, useMemo, useState } from "react";
 import { IoIosClose } from "react-icons/io";
+import { getCryptos } from "../store/cryptosSlice";
+import Loading from "./Loading";
+import { useCallback } from "react";
 
 const Currencies = ({ simplified }) => {
-  const {
-    data: { coins },
-  } = useSelector((state) => state.generalData);
-
-  const [cryptos, setCryptos] = useState([]);
-  const [value, setValue] = useState("");
-  const [searchTerm] = useDebounce(value, 500);
+  const dispatch = useDispatch();
+  const { status, data, error } = useSelector((state) => state.cryptos);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [count, setCount] = useState(simplified ? 10 : 100);
 
   useEffect(() => {
-    if (simplified && coins) {
-      setCryptos(coins.slice(0, 10));
-    } else if (!simplified && coins) {
-      setCryptos(
-        coins?.filter((coin) =>
-          coin.name.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-      );
-    }
-  }, [simplified, searchTerm]);
+    dispatch(getCryptos(count));
+  }, [count, dispatch]);
 
-  return (
+  const fliterdCrypto = useCallback(
+    (data = [], searchTerm) => {
+      return data?.filter((coin) =>
+        coin.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    },
+    [searchTerm]
+  );
+
+  return status === "loading" ? (
+    <Loading height={500} />
+  ) : status === "success" ? (
     <div>
       {!simplified && (
         <div className="mb-3 border flex w-56 bg-secondary-light items-center">
           <input
-            onChange={(e) => setValue(e.target.value)}
+            onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search cryptos..."
+            value={searchTerm}
             type="text"
-            value={value}
             className="flex-1 focus:border-b-primary-mostlydark focus:outline-none rounded-sm py-1 px-2 text-sm"
           />
-          {value && (
+          {searchTerm && (
             <IoIosClose
               className="text-2xl text-secondary-dark cursor-pointer"
-              onClick={() => setValue("")}
+              onClick={() => setSearchTerm("")}
             />
           )}
         </div>
@@ -53,12 +54,14 @@ const Currencies = ({ simplified }) => {
             : "sm:grid-cols-2 lg:grid-cols-3"
         } gap-2 w-full`}
       >
-        {cryptos?.map((coin) => (
-          <CryptoCard coin={coin} key={coin.uuid} />
+        {fliterdCrypto(data, searchTerm)?.map((coin) => (
+          <CryptoCard coin={coin} key={coin?.uuid} />
         ))}
       </div>
     </div>
-  );
+  ) : status === "failed" ? (
+    <div>Something went wrong!</div>
+  ) : null;
 };
 
 export default Currencies;
