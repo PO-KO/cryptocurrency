@@ -1,9 +1,9 @@
-import React from "react";
-import { useEffect } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getCryptoDetails } from "../store/cryptoDetailsSlice";
 import Loading from "../components/Loading";
+import uuid from "react-uuid";
 import parse from "html-react-parser";
 import {
   AiOutlineDollarCircle,
@@ -16,23 +16,58 @@ import {
   AiOutlineStop,
   AiOutlineExclamationCircle,
 } from "react-icons/ai";
+
+import { BiLink } from "react-icons/bi";
 import millify from "millify";
 import { HiTrendingDown, HiTrendingUp } from "react-icons/hi";
+import { RiArrowDropLeftLine, RiArrowDropRightLine } from "react-icons/ri";
 
 const CryptoDetails = () => {
   const dispatch = useDispatch();
   const { status, data, error } = useSelector((state) => state.cryptoDetails);
-
+  const [scrollVal, setScrollVal] = useState(0);
   const { cryptoId } = useParams();
+  const linksRef = useRef(null);
+  useEffect(() => {
+    dispatch(getCryptoDetails(cryptoId));
+  }, [cryptoId, dispatch]);
+
+  const time = ["3h", "24h", "7d", "30d", "1y", "3m", "3y", "5y"];
 
   const percentage = (value, total) =>
     parseInt((parseFloat(value) / parseFloat(total)) * 100);
 
-  const time = ["3h", "24h", "7d", "30d", "1y", "3m", "3y", "5y"];
+  let totalWidth = useMemo(() => {
+    let result = 0;
+    if (!linksRef.current) return;
+    [...linksRef.current.children].forEach((link) => {
+      result += link.getBoundingClientRect().width;
+    });
+    return result + (linksRef.current.children.length - 1) * 8;
+  }, [linksRef.current]);
 
-  useEffect(() => {
-    dispatch(getCryptoDetails(cryptoId));
-  }, [cryptoId, dispatch]);
+  const handleScrollRight = () => {
+    if (
+      scrollVal <
+      totalWidth - linksRef.current.getBoundingClientRect().width
+    ) {
+      setScrollVal(
+        (prev) =>
+          prev +
+          (totalWidth / linksRef.current.getBoundingClientRect().width) * 8
+      );
+    }
+  };
+
+  const handleScrollLeft = () => {
+    if (scrollVal > 0) {
+      setScrollVal(
+        (prev) =>
+          prev -
+          (totalWidth / linksRef.current.getBoundingClientRect().width) * 8
+      );
+    }
+  };
 
   return (
     <div className="min-h-[calc(100vh-84px)]">
@@ -41,7 +76,7 @@ const CryptoDetails = () => {
       ) : status === "success" ? (
         <div className="wrapper px-3 sd:px-7 py-6 flex">
           <div className="w-1/2 pt-8">
-            <div className="flex items-center space-x-4 mb-5">
+            <div className="flex items-center space-x-4 mb-3.5">
               <img className="w-9" src={data?.iconUrl} alt={data?.name} />
               <h1 className="text-4xl font-bold ">{data?.name}</h1>
               <span className="px-2 py-[2px] text-xs rounded-[4px] font-bold text-slate-500 bg-gray-200">
@@ -52,7 +87,42 @@ const CryptoDetails = () => {
               <AiOutlineNumber className="mr-1" />
               Rank {data?.rank}
             </span>
-            <div className="links"></div>
+            <div className="links  w-64 mt-3.5 relative">
+              {scrollVal > 0 && (
+                <span
+                  className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 text-secondary-light rounded-full bg-primary-light cursor-pointer z-10"
+                  onMouseDown={handleScrollLeft}
+                >
+                  <RiArrowDropLeftLine />
+                </span>
+              )}
+              <div className="w-[calc(100%-1rem)] mx-auto overflow-hidden">
+                <ul
+                  className="flex space-x-2 items-center transition-transform relative duration-500"
+                  style={{ transform: `translateX(-${scrollVal}px)` }}
+                  ref={linksRef}
+                >
+                  {data?.links?.map((link) => (
+                    <li key={uuid()}>
+                      <a
+                        href={link.url}
+                        target="_blank"
+                        className="text-xs bg-gray-100 hover:bg-gray-200 transition rounded-full py-1 px-2 border flex items-center whitespace-nowrap"
+                      >
+                        <BiLink className="mr-1" />
+                        {link.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <span
+                className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 text-secondary-light rounded-full bg-primary-light cursor-pointer z-10"
+                onMouseDown={handleScrollRight}
+              >
+                <RiArrowDropRightLine />
+              </span>
+            </div>
           </div>
           <div className="w-full">
             <div>
