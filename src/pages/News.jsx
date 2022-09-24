@@ -20,11 +20,11 @@ const News = ({ simplified }) => {
     dispatch(getCryptos(100));
   }, [dispatch, simplified]);
   return (
-    <div className="bg-secondary-mostlylight w-full min-h-[calc(100vh-84px)]">
+    <div className="bg-secondary-mostlylight w-full min-h-[calc(100vh-84px)] px-3 sd:px-7 py-6">
       {cryptoNews?.status === "loading" ? (
         <Loading height={700} />
       ) : cryptoNews?.status === "success" ? (
-        <div className="wrapper px-3 sd:px-7 py-6">
+        <div className="wrapper">
           {!simplified && (
             <select
               name="cryptos"
@@ -49,7 +49,6 @@ const News = ({ simplified }) => {
               <NewsCard item={item} key={uuid()} />
             ))}
           </div>
-          )}
         </div>
       ) : cryptoNews?.status === "failed" ? (
         <div>Something went wrong!</div>

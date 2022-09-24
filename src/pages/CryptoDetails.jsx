@@ -5,27 +5,18 @@ import { getCryptoDetails } from "../store/cryptoDetailsSlice";
 import Loading from "../components/Loading";
 import uuid from "react-uuid";
 import parse from "html-react-parser";
-import {
-  AiOutlineDollarCircle,
-  AiOutlineNumber,
-  AiOutlineThunderbolt,
-  AiOutlineTrophy,
-  AiOutlineFund,
-  AiOutlineMoneyCollect,
-  AiOutlineCheck,
-  AiOutlineStop,
-  AiOutlineExclamationCircle,
-} from "react-icons/ai";
-
+import { AiOutlineNumber } from "react-icons/ai";
 import { BiLink } from "react-icons/bi";
 import millify from "millify";
 import { HiTrendingDown, HiTrendingUp } from "react-icons/hi";
 import { RiArrowDropLeftLine, RiArrowDropRightLine } from "react-icons/ri";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 const CryptoDetails = () => {
   const dispatch = useDispatch();
   const { status, data, error } = useSelector((state) => state.cryptoDetails);
   const [scrollVal, setScrollVal] = useState(0);
+  const [isHidden, setIsHidden] = useState(true);
   const { cryptoId } = useParams();
   const linksRef = useRef(null);
   useEffect(() => {
@@ -34,7 +25,7 @@ const CryptoDetails = () => {
 
   const time = ["3h", "24h", "7d", "30d", "1y", "3m", "3y", "5y"];
 
-  const percentage = (value, total) =>
+  const getPercentage = (value, total) =>
     parseInt((parseFloat(value) / parseFloat(total)) * 100);
 
   let totalWidth = useMemo(() => {
@@ -69,13 +60,17 @@ const CryptoDetails = () => {
     }
   };
 
+  const getChangePrice = (price, changeParcent) => {
+    return ((parseFloat(price) * parseFloat(changeParcent)) / 100).toFixed(2);
+  };
+
   return (
     <div className="min-h-[calc(100vh-84px)]">
       {status === "loading" ? (
         <Loading height={700} />
       ) : status === "success" ? (
-        <div className="wrapper px-3 sd:px-7 py-6 flex">
-          <div className="w-1/2 pt-8">
+        <div className="wrapper px-3 sd:px-7 py-6 flex flex-wrap gap-y-10">
+          <div className="w-1/3 pt-8">
             <div className="flex items-center space-x-4 mb-3.5">
               <img className="w-9" src={data?.iconUrl} alt={data?.name} />
               <h1 className="text-4xl font-bold ">{data?.name}</h1>
@@ -124,7 +119,7 @@ const CryptoDetails = () => {
               </span>
             </div>
           </div>
-          <div className="w-full">
+          <div className="w-4/6">
             <div>
               <h4 className="text-sm text-primary-light font-semibold mb-2 flex items-center">
                 {data?.name} Price
@@ -204,7 +199,10 @@ const CryptoDetails = () => {
                       <span className="text-xs ml-1">{data?.symbol}</span>
                       {data.supply.max && (
                         <span className="ml-auto text-primary-light">
-                          {percentage(data.supply.circulating, data.supply.max)}
+                          {getPercentage(
+                            data.supply.circulating,
+                            data.supply.max
+                          )}
                           %
                         </span>
                       )}
@@ -243,6 +241,143 @@ const CryptoDetails = () => {
                       )}`}
                     </span>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="w-4/6">
+            <div
+              className="decription overflow-hidden shadow-hide relative transition-all"
+              style={{ height: isHidden ? "112px" : "100%" }}
+            >
+              <h1 className="text-[26px] font-bold">What is {data?.name}</h1>
+              {parse(data?.description)}
+              {isHidden && (
+                <div className="shadow-hide absolute bottom-0 left-0 right-0 h-[68px]" />
+              )}
+            </div>
+            <span
+              className="ml-auto w-fit text-sm text-primary-dark cursor-pointer flex items-center"
+              onClick={() => setIsHidden(!isHidden)}
+            >
+              {isHidden ? (
+                <>
+                  Read more <IoIosArrowDown className="ml-2" />
+                </>
+              ) : (
+                <>
+                  Read less <IoIosArrowUp className="ml-2" />
+                </>
+              )}
+            </span>
+          </div>
+          <div className="w-1/3 pl-10 ">
+            <div className="p-3 bg-secondary-light shadow-main rounded-lg">
+              <h3 className="text-lg font-bold pb-8 border-b border-gray-100">
+                {data?.symbol} Stats
+              </h3>
+              <div>
+                <div className="flex items-center py-4 border-b border-gray-100">
+                  <h4 className="flex-1 text-sm text-primary-light font-semibold">
+                    Ethereum Price
+                  </h4>
+                  <span className="text-sm font-bold ">
+                    {parseFloat(data?.price).toLocaleString("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </span>
+                </div>
+                <div className="flex items-center py-4 border-b border-gray-100">
+                  <h4 className="flex flex-1 text-sm text-primary-light font-semibold items-center">
+                    BTC Price
+                  </h4>
+                  <span className="text-sm font-bold">
+                    {parseFloat(data?.btcPrice).toFixed(3)}
+                  </span>
+                </div>
+                <div className="flex items-center py-4 border-b border-gray-100">
+                  <h4 className="flex flex-1 text-sm text-primary-light font-semibold items-center">
+                    Price Change{" "}
+                    <span className="ml-1 px-1 rounded-[4px] font-bold text-secondary-light bg-primary-light text-xs">
+                      24h
+                    </span>
+                  </h4>
+                  <div className="text-sm font-bold text-center space-y-1">
+                    <span>${getChangePrice(data?.price, data?.change)}</span>
+                    <span
+                      className={`${
+                        data?.change > 0 ? "text-green-600" : "text-red-600"
+                      } flex items-center `}
+                    >
+                      {parseFloat(data?.change) > 0 ? (
+                        <HiTrendingUp className="text-green-600 text-xl mr-1" />
+                      ) : (
+                        <HiTrendingDown className="text-red-600 text-xl mr-1" />
+                      )}
+                      {data?.change}%
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center py-4 border-b border-gray-100">
+                  <h4 className="flex flex-1 text-sm text-primary-light font-semibold items-center">
+                    Market Cap
+                  </h4>
+                  <span className="text-sm font-bold ">
+                    $
+                    {millify(data?.marketCap, {
+                      precision: 3,
+                    })}
+                  </span>
+                </div>
+                <div className="flex items-center py-4 border-b border-gray-100">
+                  <h4 className="flex flex-1 text-sm text-primary-light font-semibold items-center">
+                    Fully Diluted Market Cap
+                  </h4>
+                  <span className="text-sm font-bold">
+                    $
+                    {millify(data?.fullyDilutedMarketCap, {
+                      precision: 3,
+                    })}
+                  </span>{" "}
+                </div>
+                <div className="flex items-center py-4 border-b border-gray-100">
+                  <h4 className="flex flex-1 text-sm text-primary-light font-semibold items-center">
+                    Trading Volume
+                    <span className="ml-1 px-1 rounded-[4px] font-bold text-secondary-light bg-primary-light text-xs">
+                      24h
+                    </span>
+                  </h4>
+                  <span className="text-sm font-bold ">
+                    $
+                    {millify(data["24hVolume"], {
+                      precision: 3,
+                    })}
+                  </span>
+                </div>
+                <div className="flex items-center py-4 border-b border-gray-100">
+                  <h4 className="flex flex-1 text-sm text-primary-light font-semibold items-center">
+                    Number Of Markets
+                  </h4>
+                  <span className="text-sm font-bold ">
+                    {data?.numberOfMarkets}
+                  </span>
+                </div>
+                <div className="flex items-center py-4 border-b border-gray-100">
+                  <h4 className="flex flex-1 text-sm text-primary-light font-semibold items-center">
+                    Number Of Exchanges
+                  </h4>
+                  <span className="text-sm font-bold ">
+                    {data?.numberOfExchanges}
+                  </span>
+                </div>
+                <div className="flex items-center py-4">
+                  <h4 className="flex flex-1 text-sm text-primary-light font-semibold items-center">
+                    Market Rank
+                  </h4>
+                  <span className="text-sm font-bold">#{data?.rank}</span>
                 </div>
               </div>
             </div>

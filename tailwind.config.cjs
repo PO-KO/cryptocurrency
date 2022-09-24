@@ -20,6 +20,7 @@ module.exports = {
       },
       boxShadow: {
         main: "rgba(17, 17, 26, 0.1) 0px 0px 16px",
+        hide: "0px -68px 30px -30px white inset",
       },
       screens: {
         sd: "540px",
