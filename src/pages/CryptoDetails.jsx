@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getCryptoDetails } from "../store/cryptoDetailsSlice";
+import {
+  getCryptoDetails,
+  getCryptoHistory,
+} from "../store/cryptoDetailsSlice";
 import Loading from "../components/Loading";
 import uuid from "react-uuid";
 import parse from "html-react-parser";
@@ -11,19 +14,28 @@ import millify from "millify";
 import { HiTrendingDown, HiTrendingUp } from "react-icons/hi";
 import { RiArrowDropLeftLine, RiArrowDropRightLine } from "react-icons/ri";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import LineChart from "../components/LineChart";
 
 const CryptoDetails = () => {
   const dispatch = useDispatch();
-  const { status, data, error } = useSelector((state) => state.cryptoDetails);
+  const { status, data, history, error } = useSelector(
+    (state) => state.cryptoDetails
+  );
   const [scrollVal, setScrollVal] = useState(0);
   const [isHidden, setIsHidden] = useState(true);
+  const [timePeriod, setTimePeriod] = useState("24h");
+
   const { cryptoId } = useParams();
   const linksRef = useRef(null);
   useEffect(() => {
     dispatch(getCryptoDetails(cryptoId));
   }, [cryptoId, dispatch]);
 
-  const time = ["3h", "24h", "7d", "30d", "1y", "3m", "3y", "5y"];
+  useEffect(() => {
+    dispatch(getCryptoHistory({ cryptoId, timePeriod }));
+  }, [dispatch, cryptoId, timePeriod]);
+
+  const time = ["3h", "24h", "7d", "30d", "3m", "1y", "3y", "5y"];
 
   const getPercentage = (value, total) =>
     parseInt((parseFloat(value) / parseFloat(total)) * 100);
@@ -197,21 +209,21 @@ const CryptoDetails = () => {
                         "en-US"
                       )}`}
                       <span className="text-xs ml-1">{data?.symbol}</span>
-                      {data.supply.max && (
+                      {data?.supply?.max && (
                         <span className="ml-auto text-primary-light">
                           {getPercentage(
-                            data.supply.circulating,
-                            data.supply.max
+                            data?.supply?.circulating,
+                            data?.supply?.max
                           )}
                           %
                         </span>
                       )}
                     </div>
-                    {data.supply.max && (
+                    {data?.supply?.max && (
                       <div className="w-full bg-gray-200 h-[6px] rounded-full overflow-hidden">
                         <span
                           style={{
-                            width: `${percentage(
+                            width: `${getPercentage(
                               data.supply.circulating,
                               data.supply.max
                             )}%`,
@@ -247,11 +259,11 @@ const CryptoDetails = () => {
           </div>
           <div className="w-4/6">
             <div
-              className="decription overflow-hidden shadow-hide relative transition-all"
-              style={{ height: isHidden ? "112px" : "100%" }}
+              className="decription overflow-hidden shadow-hide relative"
+              style={{ height: isHidden ? "112px" : "auto" }}
             >
               <h1 className="text-[26px] font-bold">What is {data?.name}</h1>
-              {parse(data?.description)}
+              {parse(data?.description || "")}
               {isHidden && (
                 <div className="shadow-hide absolute bottom-0 left-0 right-0 h-[68px]" />
               )}
@@ -270,6 +282,14 @@ const CryptoDetails = () => {
                 </>
               )}
             </span>
+            <LineChart
+              history={history}
+              name={data?.name}
+              price={data?.price}
+              time={time}
+              setTimePeriod={setTimePeriod}
+              timePeriod={timePeriod}
+            />
           </div>
           <div className="w-1/3 pl-10 ">
             <div className="p-3 bg-secondary-light shadow-main rounded-lg">
