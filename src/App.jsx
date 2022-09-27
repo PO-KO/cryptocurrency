@@ -19,7 +19,7 @@ function App() {
     <Router>
       <div className="flex min-h-screen dark">
         <Navbar />
-        <div className="main bg-secondary-mostlylight w-full min-h-screen">
+        <div className="main bg-secondary-mostlylight max-w-[calc(100%-80px)] min-h-screen">
           <Routes>
             <Route
               path="/"

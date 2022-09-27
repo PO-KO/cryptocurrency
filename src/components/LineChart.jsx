@@ -41,7 +41,7 @@ function LineChart({ history, name, price, time, timePeriod, setTimePeriod }) {
       case "30d":
       case "3m":
         return DateTime.fromSeconds(+timestamp).toLocaleString({
-          month: "long",
+          month: "short",
           day: "numeric",
         });
       case "1y":
@@ -52,7 +52,7 @@ function LineChart({ history, name, price, time, timePeriod, setTimePeriod }) {
       case "5y":
         return DateTime.fromSeconds(+timestamp).toLocaleString({
           year: "numeric",
-          month: "long",
+          month: "short",
         });
       default:
         return null;
@@ -86,13 +86,13 @@ function LineChart({ history, name, price, time, timePeriod, setTimePeriod }) {
 
   return (
     <div>
-      <div className="chart-heading flex justify-between my-5">
-        <h3 className="font-bold ml-1">{name} Chart</h3>
-        <div className="flex rounded overflow-hidden">
+      <div className="chart-heading flex flex-col sm:flex-row items-center justify-between my-5">
+        <h3 className="font-bold ml-1 mb-3 sm:mb-0">{name} Chart</h3>
+        <div className="flex rounded overflow-hidden w-full sm:w-auto">
           {time.map((period, i) => (
             <span
               key={i}
-              className={`py-1 px-2 text-xs bg-primary-light ${
+              className={`py-1 px-2 text-xs bg-primary-light flex-1 text-center ${
                 timePeriod === period
                   ? "text-primary-mostlydark"
                   : "text-secondary-light"

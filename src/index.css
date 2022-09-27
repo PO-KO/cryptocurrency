@@ -19,4 +19,8 @@
     text-decoration: underline;
     color: theme(colors.primary.dark);
   }
+
+  .test > * {
+    background-color: hsl(140, 90%, 1);
+  }
 }

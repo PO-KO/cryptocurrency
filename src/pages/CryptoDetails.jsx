@@ -81,8 +81,8 @@ const CryptoDetails = () => {
       {status === "loading" ? (
         <Loading height={700} />
       ) : status === "success" ? (
-        <div className="wrapper px-3 sd:px-7 py-6 flex flex-wrap gap-y-10">
-          <div className="w-1/3 pt-8">
+        <div className="wrapper px-3 sd:px-7 py-6 flex flex-wrap gap-y-10 test">
+          <div className="w-full lg:w-1/3 pt-8">
             <div className="flex items-center space-x-4 mb-3.5">
               <img className="w-9" src={data?.iconUrl} alt={data?.name} />
               <h1 className="text-4xl font-bold ">{data?.name}</h1>
@@ -94,7 +94,7 @@ const CryptoDetails = () => {
               <AiOutlineNumber className="mr-1" />
               Rank {data?.rank}
             </span>
-            <div className="links  w-64 mt-3.5 relative">
+            <div className="links w-full md:w-64 mt-3.5 relative">
               {scrollVal > 0 && (
                 <span
                   className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 text-secondary-light rounded-full bg-primary-light cursor-pointer z-10"
@@ -131,7 +131,7 @@ const CryptoDetails = () => {
               </span>
             </div>
           </div>
-          <div className="w-4/6">
+          <div className="w-full lg:w-4/6">
             <div>
               <h4 className="text-sm text-primary-light font-semibold mb-2 flex items-center">
                 {data?.name} Price
@@ -158,8 +158,8 @@ const CryptoDetails = () => {
                   {data?.change}%
                 </span>
               </div>
-              <div className="flex">
-                <div className="w-1/3 border-r">
+              <div className="flex flex-wrap">
+                <div className="w-full md:w-1/3 md:border-r mb-7 md:mb-0">
                   <div className="mb-7 ">
                     <h4 className="text-xs text-primary-light font-semibold flex items-centers">
                       Market Cap
@@ -183,7 +183,7 @@ const CryptoDetails = () => {
                     </span>
                   </div>
                 </div>
-                <div className="w-1/3 border-r pl-5">
+                <div className="w-full md:w-1/3 md:border-r md:pl-5">
                   <div className="mb-7 ">
                     <h4 className="text-xs text-primary-light font-semibold flex items-centers">
                       Volume{" "}
@@ -199,7 +199,7 @@ const CryptoDetails = () => {
                     </span>
                   </div>
                 </div>
-                <div className="w-1/3 px-5">
+                <div className="w-full md:w-1/3 md:pl-5">
                   <div className="mb-7 ">
                     <h4 className="text-xs text-primary-light font-semibold flex items-centers">
                       Circulating Supply
@@ -257,7 +257,7 @@ const CryptoDetails = () => {
               </div>
             </div>
           </div>
-          <div className="w-4/6">
+          <div className="md:w-4/6 lg:w-3/4 w-full">
             <div
               className="decription overflow-hidden shadow-hide relative"
               style={{ height: isHidden ? "112px" : "auto" }}
@@ -291,7 +291,7 @@ const CryptoDetails = () => {
               timePeriod={timePeriod}
             />
           </div>
-          <div className="w-1/3 pl-10 ">
+          <div className="lg:w-1/4 md:w-1/3 md:pl-10 w-full">
             <div className="p-3 bg-secondary-light shadow-main rounded-lg">
               <h3 className="text-lg font-bold pb-8 border-b border-gray-100">
                 {data?.symbol} Stats
@@ -299,9 +299,9 @@ const CryptoDetails = () => {
               <div>
                 <div className="flex items-center py-4 border-b border-gray-100">
                   <h4 className="flex-1 text-sm text-primary-light font-semibold">
-                    Ethereum Price
+                    {data?.name} Price
                   </h4>
-                  <span className="text-sm font-bold ">
+                  <span className="text-sm font-bold">
                     {parseFloat(data?.price).toLocaleString("en-US", {
                       style: "currency",
                       currency: "USD",
