@@ -17,10 +17,6 @@ const LINKS = [
     icon: <RiMoneyDollarCircleFill className="md:text-xl text-2xl" />,
   },
   {
-    name: "Exchanges",
-    icon: <RiExchangeFill className="md:text-xl text-2xl" />,
-  },
-  {
     name: "News",
     icon: <RiNewspaperFill className="md:text-xl text-2xl" />,
   },

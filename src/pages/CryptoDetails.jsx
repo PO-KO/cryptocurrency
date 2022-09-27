@@ -248,9 +248,11 @@ const CryptoDetails = () => {
                       Total Supply
                     </h4>
                     <span className="text-sm font-bold">
-                      {`${parseFloat(data?.supply?.total).toLocaleString(
-                        "en-US"
-                      )}`}
+                      {!data?.supply?.total
+                        ? "--"
+                        : `${parseFloat(data?.supply?.total).toLocaleString(
+                            "en-US"
+                          )}`}
                     </span>
                   </div>
                 </div>

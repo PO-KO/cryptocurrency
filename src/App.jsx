@@ -5,7 +5,6 @@ import Navbar from "./components/Navbar";
 const Cryptocurrencies = React.lazy(() => import("./pages/Cryptocurrencies"));
 const CryptoDetails = React.lazy(() => import("./pages/CryptoDetails"));
 const Home = React.lazy(() => import("./pages/Home"));
-const Exchanges = React.lazy(() => import("./pages/Exchanges"));
 const News = React.lazy(() => import("./pages/News"));
 
 // import Cryptocurrencies from "./pages/Cryptocurrencies";
@@ -19,7 +18,7 @@ function App() {
     <Router>
       <div className="flex min-h-screen dark">
         <Navbar />
-        <div className="main bg-secondary-mostlylight max-w-[calc(100%-80px)] min-h-screen">
+        <div className="main bg-secondary-mostlylight w-[calc(100%-80px)] min-h-screen">
           <Routes>
             <Route
               path="/"
@@ -42,14 +41,6 @@ function App() {
               element={
                 <Suspense>
                   <CryptoDetails />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/exchanges"
-              element={
-                <Suspense>
-                  <Exchanges />
                 </Suspense>
               }
             />
